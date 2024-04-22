@@ -72,19 +72,21 @@ public class Loader extends JavaPlugin implements Runnable, Listener {
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            for (Map.Entry<EntityType, Integer> entry : entityLimits.entrySet()) {
-                EntityType entityType = entry.getKey();
-                int limit = entry.getValue();
+            Bukkit.getScheduler().runTask(this, () -> {
+                for (Map.Entry<EntityType, Integer> entry : entityLimits.entrySet()) {
+                    EntityType entityType = entry.getKey();
+                    int limit = entry.getValue();
 
-                List<Entity> entities = player.getNearbyEntities(scanRadius, scanRadius, scanRadius)
-                        .stream()
-                        .filter(entity -> entity.getType() == entityType)
-                        .collect(Collectors.toList());
+                    List<Entity> entities = player.getNearbyEntities(scanRadius, scanRadius, scanRadius)
+                            .stream()
+                            .filter(entity -> entity.getType() == entityType)
+                            .collect(Collectors.toList());
 
-                if (entities.size() > limit) {
-                    entities.subList(limit, entities.size()).forEach(Entity::remove);
+                    if (entities.size() > limit) {
+                        entities.subList(limit, entities.size()).forEach(Entity::remove);
+                    }
                 }
-            }
+            });
         }
     }
 
