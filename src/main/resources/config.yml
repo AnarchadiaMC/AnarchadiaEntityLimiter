@@ -1,0 +1,14 @@
+# Spawn radius (in blocks)
+spawn_radius: 512
+
+# Scan radius (in blocks)
+scan_radius: 64
+
+# Scan interval (in seconds)
+scan_interval: 5
+
+# Entity limits
+entity_limits:
+  BEE: 100
+  SKELETON: 25
+  STRIDER: 10

@@ -1,0 +1,4 @@
+name: AnarchadiaEntityLimiter
+version: '${project.version}'
+main: org.anarchadia.entitylimiter.Loader
+api-version: '1.20'
