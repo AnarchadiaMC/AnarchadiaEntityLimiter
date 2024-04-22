@@ -98,7 +98,7 @@ public class Loader extends JavaPlugin implements Runnable, Listener {
     @EventHandler
     public void onEntitySpawn(EntitySpawnEvent event) {
         Location spawnLocation = event.getLocation();
-        Location worldSpawn = spawnLocation.getWorld().getSpawnLocation();
+        Location worldSpawn = new Location(spawnLocation.getWorld(), 0, 0, 0);
 
         double distanceFromSpawn = spawnLocation.distanceSquared(worldSpawn);
         if (distanceFromSpawn <= spawnRadius * spawnRadius) {
