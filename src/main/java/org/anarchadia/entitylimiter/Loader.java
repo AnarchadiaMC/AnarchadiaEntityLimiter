@@ -7,9 +7,7 @@ package org.anarchadia.entitylimiter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
@@ -103,7 +101,7 @@ public class Loader extends JavaPlugin implements Runnable, Listener {
         Location worldSpawn = new Location(spawnLocation.getWorld(), 0, 0, 0);
 
         double distanceFromSpawn = spawnLocation.distanceSquared(worldSpawn);
-        if (distanceFromSpawn <= spawnRadius * spawnRadius) {
+        if (distanceFromSpawn <= spawnRadius * spawnRadius && (event.getEntity() instanceof Animals || event.getEntity() instanceof Mob)) {
             event.setCancelled(true);
         }
     }
