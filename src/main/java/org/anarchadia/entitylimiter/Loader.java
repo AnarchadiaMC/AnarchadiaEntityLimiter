@@ -101,7 +101,8 @@ public class Loader extends JavaPlugin implements Runnable, Listener {
         Location worldSpawn = new Location(spawnLocation.getWorld(), 0, 0, 0);
 
         double distanceFromSpawn = spawnLocation.distanceSquared(worldSpawn);
-        if (distanceFromSpawn <= spawnRadius * spawnRadius && (event.getEntity() instanceof Animals || event.getEntity() instanceof Mob)) {
+        Entity entity = event.getEntity();
+        if (distanceFromSpawn <= spawnRadius * spawnRadius && (entity instanceof Mob) && !(entity instanceof Wither)) {
             event.setCancelled(true);
         }
     }
