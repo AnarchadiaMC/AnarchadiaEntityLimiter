@@ -2,13 +2,35 @@
 spawn_radius: 512
 
 # Scan radius (in blocks)
-scan_radius: 64
+# Set to -1 to use player's simulation distance
+scan_radius: -1
 
 # Scan interval (in seconds)
 scan_interval: 5
 
 # Entity limits
 entity_limits:
-  BEE: 100
+  BEE: 75
   SKELETON: 25
-  STRIDER: 10
+  STRIDER: 15
+  ZOMBIE: 75
+  CREEPER: 75
+  SPIDER: 30
+  ENDERMAN: 75
+  SLIME: 10
+  WITCH: 10
+  PHANTOM: 0
+  PIGLIN: 75
+  HOGLIN: 15
+  ZOGLIN: 10
+  BLAZE: 15
+  MAGMA_CUBE: 10
+
+# Whitelisted entities allowed at spawn
+spawn_whitelist:
+  - WITHER
+  - CHICKEN
+
+# Display name blacklist patterns (regex)
+display_name_blacklist:
+  - "(?i).*nigg.*" # Case-insensitive match for names containing "nigg"
