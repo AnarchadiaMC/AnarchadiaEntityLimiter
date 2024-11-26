@@ -179,8 +179,12 @@ public class Loader extends JavaPlugin implements Runnable, Listener {
         Location spawnLocation = event.getLocation();
         Location worldSpawn = new Location(spawnLocation.getWorld(), 0, 0, 0);
 
-        // Check spawn radius and block only mobs not in the whitelist
-        if (spawnLocation.distance(worldSpawn) <= spawnRadius && event.getEntity() instanceof Mob && !spawnWhitelist.contains(event.getEntityType())) {
+        // Check spawn radius and block only mobs not in the whitelist, allowing items to spawn
+        Entity entity = event.getEntity();
+        if (spawnLocation.distance(worldSpawn) <= spawnRadius 
+            && entity instanceof Mob 
+            && !(entity instanceof Item) 
+            && !spawnWhitelist.contains(event.getEntityType())) {
             event.setCancelled(true);
             return;
         }
