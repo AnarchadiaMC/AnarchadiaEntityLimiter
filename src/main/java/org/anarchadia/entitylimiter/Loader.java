@@ -1,23 +1,28 @@
 package org.anarchadia.entitylimiter;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.*;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntitySpawnEvent;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Mob;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * The Loader class is an Entity limiting plugin that manages entity limits and prevents entities
@@ -93,7 +98,27 @@ public class Loader extends JavaPlugin implements Runnable, Listener {
     }
 
     /**
-     * Checks and renames an entity if its display name matches any blacklisted pattern.
+     * Checks if a string contains Unicode characters (non-ASCII).
+     *
+     * @param text The string to check for Unicode characters.
+     * @return true if the string contains Unicode characters, false otherwise.
+     */
+    private boolean containsUnicode(String text) {
+        if (text == null) {
+            return false;
+        }
+        
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) > 127) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks and renames an entity if its display name matches any blacklisted pattern
+     * or contains Unicode characters.
      *
      * @param entity The entity to check and potentially rename.
      */
@@ -103,6 +128,14 @@ public class Loader extends JavaPlugin implements Runnable, Listener {
             String customName = livingEntity.getCustomName();
             
             if (customName != null) {
+                // Check for Unicode characters first
+                if (containsUnicode(customName)) {
+                    livingEntity.setCustomName(RENAME_TEXT);
+                    livingEntity.setCustomNameVisible(true);
+                    return;
+                }
+                
+                // Then check against blacklist patterns
                 String lowerCustomName = customName.toLowerCase();
                 for (Pattern pattern : blacklistPatterns) {
                     if (pattern.matcher(lowerCustomName).matches()) {
